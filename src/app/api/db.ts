@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
-const MongoURl = "mongodb+srv://radjikins21:sB6AgU3fqnQ6kCRo@cluster0.bjvov.mongodb.net/"
+dotenv.config()
 
 export const connectDB = async ()=>{
     try{
@@ -8,7 +9,7 @@ export const connectDB = async ()=>{
             console.log("Already connected to db")
             return
         }
-        await mongoose.connect(MongoURl)
+        await mongoose.connect(process.env.MongoURL as string)
     }catch(error){
         console.log("Error conecting to mongoDB",error)
     }
