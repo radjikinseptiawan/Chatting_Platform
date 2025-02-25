@@ -21,11 +21,6 @@ const users  = [
       "profile_picture": "https://example.com/profile/foodlover.jpg"
     },
     {
-      "id": 107,
-      "username": "techgeek",
-      "profile_picture": "https://example.com/profile/techgeek.jpg"
-    },
-    {
       "id": 108,
       "username": "fitness_freak",
       "profile_picture": "https://example.com/profile/fitnessfreak.jpg"
@@ -133,8 +128,8 @@ export default function MainPost() {
     },[])
     return (
       <>
+      <div className="mt-16">
       <PostAction></PostAction>
-      <div className="mt-36">
       {users.map(user => {
      const userPost = posts.filter(post => post.user_id == user.id)
      return(

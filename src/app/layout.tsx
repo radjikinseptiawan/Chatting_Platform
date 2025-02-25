@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +29,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div className="bg-slate-100 w-full flex justify-between top-0 p-2 fixed">
+          <div className="flex">
+            <Input type="text" className="w-56"></Input>
+            <Button></Button> 
+          </div>
+          <div>
+          <Button></Button>
+          <Button></Button>
+          <Button></Button>
+          <Button></Button>
+          </div>
+        </div>
         {children}
       </body>
     </html>
