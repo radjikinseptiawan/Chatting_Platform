@@ -13,6 +13,9 @@ export async function POST(req : Request){
     try{
         const {textMessage} = await req.json()
         const message = new Message({textMessage})
+        if(!textMessage){
+            return NextResponse.json({message : "Field must be filled!"},{status : 400})
+        }
         await message.save()
         return NextResponse.json({message : "Success asking a request"},{status:200})
     }catch(error){
