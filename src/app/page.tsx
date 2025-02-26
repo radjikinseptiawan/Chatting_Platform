@@ -13,11 +13,11 @@ interface itemType {
 }
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR( process.env.NEXT_PUBLIC_API_URL as string||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
+  const { data, error, isLoading } = useSWR( process.env.NEXT_PUBLIC_API_URL ||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
   const [message, setMessage] = useState('')
 
   const postMessage = async () => {
-    const response = await axios.post( process.env.NEXT_PUBLIC_API_URL as string||"http://localhost:3000/api/chat", { textMessage: message })
+    const response = await axios.post( process.env.NEXT_PUBLIC_API_URL ||"http://localhost:3000/api/chat", { textMessage: message })
     setMessage("")
     return response
   }
