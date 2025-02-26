@@ -2,6 +2,12 @@ import { NextResponse } from "next/server"
 import { Message } from "../models/models"
 import { connectDB } from "../db"
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin" : "*",
+    "Access-Control-Allow-Methods" : "GET,POST",
+    "Access-Control-Allow-Headers" : "Content-Type"
+}
+
 export async function GET(){
     await connectDB()
     const messages = await Message.find()
@@ -21,4 +27,8 @@ export async function POST(req : Request){
     }catch(error){
         return NextResponse.json({message : "Failed to make request!",error},{status:400})
     }
+}
+
+export function OPTIONS(){
+    return NextResponse.json({},{headers : corsHeaders})
 }
