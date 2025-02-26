@@ -57,6 +57,11 @@
 
     --radius: 0.5rem
   }
+
+  .background{
+    background: url("../../public/background.mp4");
+  }
+
   .dark {
 
     --background: 240 10% 3.9%;
