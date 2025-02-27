@@ -98,7 +98,7 @@ export default function Home() {
         <ul className="flex flex-col-reverse space-y-2">
           {data?.msg?.length ? (
             data.msg.map((item: itemType) => (
-              <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
+              <li key={item._id} className="bg-lime-600 my-1 text-white p-3 rounded-xl max-w-fit break-words">
                 <p>{item.textMessage}</p>
               </li>
             ))
