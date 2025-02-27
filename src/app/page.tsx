@@ -96,7 +96,7 @@ export default function Home() {
             ))
           ) : (
             <>
-            <p>Chat akan otomatis terhapus dalam 24 jam (Next Goal)</p>
+            <p className="text-center text-gray-500">Chat akan otomatis terhapus dalam 24 jam (Next Goal)</p>
             <p className="text-center text-gray-500">Tidak ada pesan</p>
             </>
           )}
