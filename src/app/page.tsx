@@ -3,9 +3,14 @@ import axios from "axios"
 import { useState } from "react"
 import useSWR from "swr"
 import dotenv from "dotenv"
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar"
+import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
 
 dotenv.config()
 const getData = async (url: string) => await axios.get(url).then((res) => res.data)
+
+const URL = process.env.NEXT_PUBLI_API_URL
 
 interface itemType {
   _id: number,
@@ -13,17 +18,26 @@ interface itemType {
 }
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR(process.env.NEXT_PUBLIC_API_URL ||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
+  const { data, error, isLoading } = useSWR( URL ||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
   const [message, setMessage] = useState('')
 
   const postMessage = async () => {
-    const response = await axios.post(process.env.NEXT_PUBLIC_API_URL ||"http://localhost:3000/api/chat", { textMessage: message })
+    const response = await axios.post(URL || "http://localhost:3000/api/chat", { textMessage: message })
     setMessage("")
     return response
   }
 
   if (isLoading) {
-    return <p className="text-center text-gray-500">Loading...</p>
+    return (
+      <div className="flex items-center first-letter justify-center h-screen bg-gray-100">
+        <div className="bg-white p-4 rounded-md flex flex-col justify-center">
+        <Button className="mt-4 flex items-center gap-2" disabled>
+        <Loader2 className="w-5 h-5 animate-spin"></Loader2>
+        </Button>
+        <p className="text-center text-gray-500">Fetching data....</p>
+        </div>
+      </div>
+  )
   }
   if (error) {
     return <p className="text-center text-red-500">Terjadi kesalahan</p>
@@ -31,7 +45,13 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100">
-      <div className="w-full max-w-lg min-h-screen mb-16 p-4 bg-white shadow-lg overflow-y-auto rounded-md">
+      <div className="bg-white shadow-lg w-full max-w-lg z-20 gap-2 flex items-center rounded-md p-2 fixed top-0">
+        <Avatar className="bg-blue-500 rounded-full p-2">
+          <AvatarFallback className="font-semibold text-white">DM</AvatarFallback>
+        </Avatar>
+        <p className="font-semibold">Demo</p>
+      </div>
+      <div className="w-full max-w-lg min-h-screen mb-16 p-4 my-8 bg-white shadow-lg overflow-y-auto rounded-md">
         <ul className="space-y-2">
           {data?.msg?.length ? data.msg.map((item: itemType) => (
             <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
