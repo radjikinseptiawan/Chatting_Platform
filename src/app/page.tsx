@@ -88,7 +88,6 @@ export default function Home() {
 
       <div className="w-full max-w-lg min-h-screen mb-16 p-4 my-8 bg-white shadow-lg overflow-y-auto rounded-md">
         <ul className="space-y-2">
-          <p>Chat akan otomatis terhapus dalam 24 jam (Next Goal)</p>
           {data?.msg?.length ? (
             data.msg.map((item: itemType) => (
               <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
@@ -96,7 +95,10 @@ export default function Home() {
               </li>
             ))
           ) : (
+            <>
+            <p>Chat akan otomatis terhapus dalam 24 jam (Next Goal)</p>
             <p className="text-center text-gray-500">Tidak ada pesan</p>
+            </>
           )}
         </ul>
       </div>
