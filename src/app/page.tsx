@@ -10,7 +10,6 @@ import { Loader2 } from "lucide-react"
 dotenv.config()
 const getData = async (url: string) => await axios.get(url).then((res) => res.data)
 
-const URL = process.env.NEXT_PUBLIC_API_URL
 
 interface itemType {
   _id: number,
@@ -18,11 +17,16 @@ interface itemType {
 }
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR( URL ||"http://localhost:3000/api/cht", getData, { refreshInterval: 3000 })
+  const { data, error, isLoading } = useSWR( process.env.NEXT_PUBLIC_API_URL ||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
   const [message, setMessage] = useState('')
+  const [isTrue, setIsTrue] = useState(false)
 
   const postMessage = async () => {
-    const response = await axios.post(URL || "http://localhost:3000/api/ct", { textMessage: message })
+    setIsTrue(true)
+    const response = await axios.post(process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/chat", { textMessage: message })
+    if(response){
+      setIsTrue(false)
+    }
     setMessage("")
     return response
   }
@@ -77,7 +81,7 @@ export default function Home() {
           onClick={postMessage} 
           className="bg-blue-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-600"
         >
-          Kirim
+          {isTrue ? <Loader2 className="w-5 h-5 animate-spin"/> : "Kirim"}
         </button>
       </div>
     </div>
