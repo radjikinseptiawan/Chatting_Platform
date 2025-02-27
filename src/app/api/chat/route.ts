@@ -3,7 +3,7 @@ import { Message } from "../models/models"
 import { connectDB } from "../db"
 
 const corsHeaders = {
-    "Access-Control-Allow-Origin" : "*",
+    "Access-Control-Allow-Origin" : "https://chatting-platform-two.vercel.app/",
     "Access-Control-Allow-Methods" : "GET,POST,OPTIONS",
     "Access-Control-Allow-Headers" : "Content-Type"
 }
@@ -11,7 +11,7 @@ const corsHeaders = {
 export async function GET(){
     await connectDB()
     const messages = await Message.find()
-    return NextResponse.json({msg : messages})
+    return NextResponse.json({msg : messages},{headers : corsHeaders})
 }
 
 export async function POST(req : Request){
@@ -20,12 +20,12 @@ export async function POST(req : Request){
         const {textMessage} = await req.json()
         const message = new Message({textMessage})
         if(!textMessage){
-            return NextResponse.json({message : "Field must be filled!"},{status : 400})
+            return NextResponse.json({message : "Field must be filled!"},{status : 400, headers : corsHeaders})
         }
         await message.save()
-        return NextResponse.json({message : "Success asking a request"},{status:200})
+        return NextResponse.json({message : "Success asking a request"},{status:200, headers : corsHeaders})
     }catch(error){
-        return NextResponse.json({message : "Failed to make request!",error},{status:400})
+        return NextResponse.json({message : "Failed to make request!",error},{status:400, headers : corsHeaders})
     }
 }
 

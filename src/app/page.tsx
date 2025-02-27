@@ -1,55 +1,77 @@
-"use client"
-import axios from "axios"
-import { useState } from "react"
-import useSWR from "swr"
-import dotenv from "dotenv"
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar"
-import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+"use client";
+import axios from "axios";
+import { useState } from "react";
+import useSWR from "swr";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import dotenv from 'dotenv'
 
 dotenv.config()
-const getData = async (url: string) => await axios.get(url).then((res) => res.data)
 
+const getData = async (url: string) => {
+  try {
+    const response = await axios.get(url);
+    return response.data
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    throw err;
+  }
+};
 
 interface itemType {
-  _id: number,
-  textMessage: string
+  _id: number;
+  textMessage: string;
 }
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR( process.env.NEXT_PUBLIC_API_URL ||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
-  const [message, setMessage] = useState('')
-  const [isTrue, setIsTrue] = useState(false)
+  const { data, error, isLoading } = useSWR(
+    process.env.NEXT_PUBLIC_API_URL
+    ||
+    "http://localhost:3000/api/chat",
+    getData,
+    { refreshInterval: 3000 }
+  );
+  const [message, setMessage] = useState("");
+  const [isTrue, setIsTrue] = useState(false);
 
   const postMessage = async () => {
-    setIsTrue(true)
-    const response = await axios.post(process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/chat", { textMessage: message })
-    if(response){
-      setIsTrue(false)
+    setIsTrue(true);
+    try {
+      await axios.post("http://localhost:3000/api/chat", {
+        textMessage: message,
+      });
+    } catch (err) {
+      console.error("Error posting message:", err);
+    } finally {
+      setIsTrue(false);
+      setMessage("");
     }
-    setMessage("")
-    return response
-  }
+  };
 
   if (isLoading) {
     return (
-      <div className="flex items-center first-letter justify-center h-screen bg-gray-100">
-        <div className="bg-white p-4 rounded-md flex flex-col justify-center">
-        <Button className="mt-4 flex items-center gap-2" disabled>
-        <Loader2 className="w-5 h-5 animate-spin"></Loader2>
-        </Button>
-        <p className="text-center text-gray-500">Fetching data....</p>
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="bg-white p-4 rounded-md flex flex-col items-center">
+          <Button className="mt-4 flex items-center gap-2" disabled>
+            <Loader2 className="w-5 h-5 animate-spin" />
+          </Button>
+          <p className="text-center text-gray-500">Fetching data...</p>
         </div>
       </div>
-  )
+    );
   }
+
   if (error) {
-    <div className="flex items-center first-letter justify-center h-screen bg-gray-100">
-    <div className="bg-white p-4 rounded-md flex flex-col justify-center">
-    <h1 className="font-bold text-lg rext-red-600">404</h1>
-    <p className="text-center text-red-600">Error fetching data</p>
-    </div>
-  </div> }
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="bg-white p-4 rounded-md flex flex-col items-center">
+          <h1 className="font-bold text-lg text-red-600">404</h1>
+          <p className="text-center text-red-600">Error fetching data</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100">
@@ -59,31 +81,36 @@ export default function Home() {
         </Avatar>
         <p className="font-semibold">Demo</p>
       </div>
+
       <div className="w-full max-w-lg min-h-screen mb-16 p-4 my-8 bg-white shadow-lg overflow-y-auto rounded-md">
         <ul className="space-y-2">
-          {data?.msg?.length ? data.msg.map((item: itemType) => (
-            <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
-              <p>{item.textMessage}</p>
-            </li>
-          )) : <p className="text-center text-gray-500">Tidak ada pesan</p>}
+          {data?.msg?.length ? (
+            data.msg.map((item: itemType) => (
+              <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
+                <p>{item.textMessage}</p>
+              </li>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Tidak ada pesan</p>
+          )}
         </ul>
       </div>
 
-      <div className=" bg-white p-4 fixed bottom-0 w-full max-w-lg flex items-center gap-2 px-4">
-        <input 
-          type="text" 
-          className="flex-1 border rounded-lg p-3 focus:outline-none" 
-          value={message} 
-          onChange={(e) => setMessage(e.target.value)} 
+      <div className="bg-white p-4 fixed bottom-0 w-full max-w-lg flex items-center gap-2 px-4">
+        <input
+          type="text"
+          className="flex-1 border rounded-lg p-3 focus:outline-none"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="Ketik pesan..."
         />
-        <button 
-          onClick={postMessage} 
+        <button
+          onClick={postMessage}
           className="bg-blue-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-600"
         >
-          {isTrue ? <Loader2 className="w-5 h-5 animate-spin"/> : "Kirim"}
+          {isTrue ? <Loader2 className="w-5 h-5 animate-spin" /> : "Kirim"}
         </button>
       </div>
     </div>
-  )
+  );
 }
