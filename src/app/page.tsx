@@ -78,6 +78,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100">
+      
       <div className="bg-white shadow-lg w-full max-w-lg z-20 gap-2 flex items-center rounded-md p-2 fixed top-0">
         <Avatar className="bg-blue-500 rounded-full p-2">
           <AvatarFallback className="font-semibold text-white">DM</AvatarFallback>
@@ -87,6 +88,7 @@ export default function Home() {
 
       <div className="w-full max-w-lg min-h-screen mb-16 p-4 my-8 bg-white shadow-lg overflow-y-auto rounded-md">
         <ul className="space-y-2">
+          <p>Chat akan otomatis terhapus dalam 24 jam (Next Goal)</p>
           {data?.msg?.length ? (
             data.msg.map((item: itemType) => (
               <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
