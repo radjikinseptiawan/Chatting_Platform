@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react"
 dotenv.config()
 const getData = async (url: string) => await axios.get(url).then((res) => res.data)
 
-const URL = process.env.NEXT_PUBLI_API_URL
+const URL = process.env.NEXT_PUBLIC_API_URL
 
 interface itemType {
   _id: number,
@@ -18,11 +18,11 @@ interface itemType {
 }
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR( URL ||"http://localhost:3000/api/chat", getData, { refreshInterval: 3000 })
+  const { data, error, isLoading } = useSWR( URL ||"http://localhost:3000/api/cht", getData, { refreshInterval: 3000 })
   const [message, setMessage] = useState('')
 
   const postMessage = async () => {
-    const response = await axios.post(URL || "http://localhost:3000/api/chat", { textMessage: message })
+    const response = await axios.post(URL || "http://localhost:3000/api/ct", { textMessage: message })
     setMessage("")
     return response
   }
@@ -40,8 +40,12 @@ export default function Home() {
   )
   }
   if (error) {
-    return <p className="text-center text-red-500">Terjadi kesalahan</p>
-  }
+    <div className="flex items-center first-letter justify-center h-screen bg-gray-100">
+    <div className="bg-white p-4 rounded-md flex flex-col justify-center">
+    <h1 className="font-bold text-lg rext-red-600">404</h1>
+    <p className="text-center text-red-600">Error fetching data</p>
+    </div>
+  </div> }
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100">
