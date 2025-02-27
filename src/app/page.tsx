@@ -34,7 +34,7 @@ export default function Home() {
       <div className="w-full max-w-lg min-h-screen mb-16 p-4 bg-white shadow-lg overflow-y-auto rounded-md">
         <ul className="space-y-2">
           {data?.msg?.length ? data.msg.map((item: itemType) => (
-            <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-xs break-words">
+            <li key={item._id} className="bg-lime-600 text-white p-3 rounded-xl max-w-fit break-words">
               <p>{item.textMessage}</p>
             </li>
           )) : <p className="text-center text-gray-500">Tidak ada pesan</p>}
