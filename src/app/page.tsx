@@ -22,11 +22,29 @@ const getData = async (url: string) => {
 interface itemType {
   _id: number;
   textMessage: string;
+  time : Date;
+}
+
+
+const formatTime = (date  : Date  | string)=>{
+if(!date){
+  return `Invalid date!`
+}
+
+const parseDate = new Date(date)
+if(isNaN(parseDate.getDate())){
+  return `Invalid Date!`
+}
+  return parseDate.toLocaleString("id-ID",{
+  hour : "2-digit",
+  minute : "2-digit",
+  hour12 : false
+})
 }
 
 export default function Home() {
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR( 
     process.env.NEXT_PUBLIC_API_URL
     ||
     "http://localhost:3000/api/chat",
@@ -99,7 +117,10 @@ export default function Home() {
           {data?.msg?.length ? (
             data.msg.map((item: itemType) => (
               <li key={item._id} className="bg-lime-600 my-1 text-white p-3 rounded-xl max-w-fit break-words">
-                <p>{item.textMessage}</p>
+                <p className="flex flex-start">{item.textMessage}</p>
+                <div className="flex flex-end mt-1 text-sm text-lime-800">
+                <p>{formatTime(item.time)}</p>
+                </div>
               </li>
             ))
           ) : (

@@ -18,10 +18,12 @@ export async function POST(req : Request){
     await connectDB()
     try{
         const {textMessage} = await req.json()
-        const message = new Message({textMessage})
+
         if(!textMessage){
             return NextResponse.json({message : "Field must be filled!"},{status : 400, headers : corsHeaders})
         }
+        const newTime = new Date().toISOString()
+        const message = new Message({textMessage,time : newTime})
         await message.save()
         return NextResponse.json({message : "Success asking a request"},{status:200, headers : corsHeaders})
     }catch(error){

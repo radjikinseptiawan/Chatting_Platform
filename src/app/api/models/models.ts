@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.models.User || mongoose.model("User",userSchema)
 
 const messageSchema = new mongoose.Schema({
-    textMessage : {type : String, }
+    textMessage : {type : String, required : true},
+    time : {type : Date, required : true}
 })
 
 const Message =  mongoose.models.Message || mongoose.model("Message",messageSchema)
