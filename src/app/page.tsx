@@ -38,7 +38,10 @@ export default function Home() {
   const postMessage = async () => {
     setIsTrue(true);
     try {
-      await axios.post("http://localhost:3000/api/chat", {
+      await axios.post( 
+        process.env.NEXT_PUBLIC_API_URL
+        ||
+        "http://localhost:3000/api/chat", {
         textMessage: message,
       });
     } catch (err) {
@@ -107,6 +110,7 @@ export default function Home() {
         <button
           onClick={postMessage}
           className="bg-blue-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-600"
+          disabled = {isTrue ? true : false}
         >
           {isTrue ? <Loader2 className="w-5 h-5 animate-spin" /> : "Kirim"}
         </button>
