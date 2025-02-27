@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,7 @@ interface itemType {
 }
 
 export default function Home() {
+
   const { data, error, isLoading } = useSWR(
     process.env.NEXT_PUBLIC_API_URL
     ||
@@ -32,8 +33,15 @@ export default function Home() {
     getData,
     { refreshInterval: 3000 }
   );
+  const chatContainerRef = useRef<HTMLInputElement>(null)
   const [message, setMessage] = useState("");
   const [isTrue, setIsTrue] = useState(false);
+
+  useEffect(()=>{
+    if(chatContainerRef.current){
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  },[data])
 
   const postMessage = async () => {
     setIsTrue(true);
