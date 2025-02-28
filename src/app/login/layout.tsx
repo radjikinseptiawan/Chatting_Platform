@@ -27,8 +27,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-    <div className="bg-slate-100 w-full flex justify-between top-0 p-7 fixed">
-        </div>
         {children}
       </body>
     </html>
